@@ -16,7 +16,8 @@ The bridge events are stored into MySQL database in transactional manner.\
 The bridge events are also published into RabbitMQ in `bridge-events` queue for the realtime downstream updates. 
 
 ### api-server
-Simple REST HTTP server with basic endpoints.
+Simple REST HTTP server with basic endpoints.\
+Default listening should start on http://localhost:3000
 
 **GET /bridge-events**
 
@@ -38,7 +39,7 @@ Returns an array of blocks in the specified range.
 `GET /bridge-events?fromBlock=21308167&toBlock=21308210`
 
 **Example Response:**
-```json
+```json5
 {
     "bridgeEvents": [
         {
@@ -147,7 +148,8 @@ The DB DDL is supposed to be generated on indexer-app first start.
 ### Install RabbitMQ.
 It might be a docker, remote or local installation. In this example we use the local Linux Mint installation:
 ```bash
-$ apt-get install rabbitmq-server
+$ sudo apt-get install rabbitmq-server
+$ sudo rabbitmq-plugins enable rabbitmq_management
 ````
 Tested with RabbitMQ 3.9.27 listening on localhost:5672 and web management on http://localhost:15672/ \
 RabbitMQ connection parameters might be changed in: \
@@ -166,6 +168,9 @@ Alternative DB configuration (e.g. for remote server) might be done in :\
 
 SocketGateway contract address might be changed as well if required:\
 `libs/shared/src/config/general.config.ts:contractAddress`
+
+The api-server listening port can be changed here:\
+`libs/shared/src/config/general.config.ts:apiServer.port`
 
 ## Running indexer-app
 
