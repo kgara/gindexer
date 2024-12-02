@@ -99,16 +99,17 @@ export class IndexerService {
         const metadata = parsedLog.args[6];
         const transactionHash = log.transactionHash;
         //
-        const bridgeEvent = new BridgeEvent();
-        bridgeEvent.hash = transactionHash;
-        bridgeEvent.blockNumber = blockNumber;
-        bridgeEvent.amount = amount;
-        bridgeEvent.toChainId = toChainId;
-        bridgeEvent.bridgeName = bridgeName;
-        bridgeEvent.token = token;
-        bridgeEvent.sender = sender;
-        bridgeEvent.receiver = receiver;
-        bridgeEvent.metadata = metadata;
+        const bridgeEvent = BridgeEvent.builder()
+          .hash(transactionHash)
+          .blockNumber(blockNumber)
+          .amount(amount)
+          .toChainId(toChainId)
+          .bridgeName(bridgeName)
+          .token(token)
+          .sender(sender)
+          .receiver(receiver)
+          .metadata(metadata)
+          .build();
         await this.storeBridgeEvent(bridgeEvent, entityManager);
         await this.publishEventToQueue(bridgeEvent);
       }
